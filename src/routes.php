@@ -6,7 +6,6 @@ define("DB_PASSWORD", "");
 define("DB_NAME", "uberhack_db");
 
 
-
 $app->get('/',function ($request, $response, $args){	
 	return 'I am working!';
 });
@@ -39,4 +38,19 @@ $app->get('/getAllDrivers',function ($request, $response, $args){
 	
 	$conn->close();
 	return  json_encode($drivers);
+});
+
+$app->get('/getAllClasses',function ($request, $response, $args){	
+	$conn = new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
+	$sql = "SELECT * FROM classes";
+	$result = $conn->query($sql);
+
+	$classes = array();
+
+	while($row = $result->fetch_assoc()){
+	  $classes[] = array_map('utf8_encode', $row);
+	}
+	
+	$conn->close();
+	return  json_encode($classes);
 });
